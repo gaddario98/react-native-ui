@@ -1,0 +1,67 @@
+{
+  "name": "@gaddario98/react-native-ui",
+  "version": "1.0.19",
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/rollup-plugin-peer-deps-external": "^2",
+    "rollup": "^4.40.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "@expo/vector-icons": "*",
+    "@gaddario98/react-native-utiles": "*",
+    "@gaddario98/react-notifications": "*",
+    "@gaddario98/react-state": "*",
+    "@gaddario98/utiles": "*",
+    "@react-native-community/datetimepicker": "*",
+    "@types/react": "*",
+    "@types/react-dom": "*",
+    "@types/react-native": "*",
+    "date-fns": "*",
+    "expo-blur": "*",
+    "expo-image": "*",
+    "expo-linear-gradient": "*",
+    "expo-router": "*",
+    "i18next": "*",
+    "react": "*",
+    "react-i18next": "*",
+    "react-native": "*",
+    "react-native-reanimated": "*",
+    "react-native-safe-area-context": "*"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gaddario98/react-native-ui"
+  },
+  "keywords": [
+    "react-native",
+    "ui",
+    "expo",
+    "component-library"
+  ],
+  "author": "Giosuè Addario ",
+  "bugs": {
+    "url": "https://github.com/gaddario98/react-native-ui/issues"
+  },
+  "homepage": "https://github.com/gaddario98/react-native-ui#readme"
+}

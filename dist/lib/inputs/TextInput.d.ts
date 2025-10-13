@@ -1,0 +1,27 @@
+import { ComponentProps } from "react";
+import { TextInputProps as RNTextInputProps, StyleProp, ViewStyle, TextStyle } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+type InputType = "email" | "password" | "phone" | "text" | "number" | "textarea";
+export type TextInputProps = {
+    type?: InputType;
+    onValidationChange?: (isValid: boolean) => void;
+    containerStyle?: StyleProp<ViewStyle>;
+    inputStyle?: StyleProp<TextStyle>;
+    min?: number;
+    max?: number;
+    variant?: "primary" | "secondary" | "tertiary";
+    startIcon?: ComponentProps<typeof Ionicons>["name"];
+    endIcon?: ComponentProps<typeof Ionicons>["name"];
+    onEndIconPress?: () => void;
+    disabled?: boolean;
+    loading?: boolean;
+    debounceTime?: number;
+    value?: string | undefined;
+    onChange?: (value: string) => void;
+    error?: boolean;
+    errorMessage?: string;
+    label?: string;
+    ns?: string;
+} & Omit<RNTextInputProps, "style" | "onChange">;
+declare const _default: import("react").NamedExoticComponent<TextInputProps>;
+export default _default;
