@@ -78,6 +78,12 @@
       "require": "./dist/index.js",
       "default": "./dist/index.js"
     },
+    "./lib": {
+      "types": "./dist/lib/index.d.ts",
+      "import": "./dist/lib/index.mjs",
+      "require": "./dist/lib/index.js",
+      "default": "./dist/lib/index.js"
+    },
     "./styles": {
       "types": "./dist/styles/index.d.ts",
       "import": "./dist/styles/index.mjs",
