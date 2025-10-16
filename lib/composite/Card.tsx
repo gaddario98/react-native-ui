@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useMemo } from "react";
 import {
   padding,
-  gap,
   buttonStyle,
   sectionSubtitle,
   sectionTitle,
@@ -29,6 +28,7 @@ import { ImageStyle } from "expo-image";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Button, SocialLink, Text } from "../base";
 import Image from "./Image";
+import { SocialLinkProps } from "../base/types";
 
 type SocialPlatform =
   | "instagram"
@@ -38,14 +38,6 @@ type SocialPlatform =
   | "linkedin"
   | "youtube"
   | "custom";
-
-interface SocialLink {
-  platform: SocialPlatform;
-  username?: string;
-  url?: string;
-  text?: string;
-  icon?: React.ReactNode;
-}
 
 interface IconProps {
   name: keyof typeof MaterialIcons.glyphMap;
@@ -62,7 +54,7 @@ export interface CardProps {
   image?: string;
   fallbackSource?: string;
   actions?: Array<React.ComponentProps<typeof Button>>;
-  socialLinks?: SocialLink[];
+  socialLinks?: SocialLinkProps[];
   outlined?: boolean;
   elevated?: boolean;
   onPress?: () => void;
