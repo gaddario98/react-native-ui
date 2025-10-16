@@ -8,7 +8,7 @@
   "react-native": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c rollup.config.js && rollup -c rollup.dts.config.js",
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
@@ -45,6 +45,7 @@
     "expo-blur": ">=13.0.0",
     "expo-image": ">=1.0.0",
     "expo-linear-gradient": ">=13.0.0",
+    "expo-router": ">=6.0.0",
     "react": ">=18.0.0 <20.0.0",
     "react-i18next": ">=13.0.0",
     "react-native": ">=0.70.0",
@@ -76,6 +77,12 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./styles": {
+      "types": "./dist/styles/index.d.ts",
+      "import": "./dist/styles/index.mjs",
+      "require": "./dist/styles/index.js",
+      "default": "./dist/styles/index.js"
     }
   },
   "repository": {

@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC, useMemo, useCallback } from "react";
 import {
   View,
   TouchableOpacity,
@@ -9,9 +9,19 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { router } from "expo-router";
 import { Text } from "../base/Text";
 import { iconTitleSize, sectionTitle, useThemeColors } from "../../styles";
+
+// Lazy import di expo-router per evitare errori di moduli nativi in Bridgeless mode
+const getRouterBack = () => {
+  try {
+    const { router } = require("expo-router");
+    return router.back;
+  } catch (e) {
+    console.warn("expo-router not available, back button will not work");
+    return () => {};
+  }
+};
 
 export interface RightActionConfig {
   icon: keyof typeof Ionicons.glyphMap;
@@ -41,6 +51,8 @@ export const Header: FC<HeaderProps> = ({
 }) => {
   const theme = useThemeColors();
   const textColor = useMemo(() => theme.onSecondary, [theme]);
+
+  const routerBack = useCallback(getRouterBack, []);
 
   const fadeAnim = useMemo(() => new Animated.Value(0), []);
   useMemo(() => {
@@ -78,7 +90,7 @@ export const Header: FC<HeaderProps> = ({
         <View style={styles.innerContent}>
           {!hiddenLeftAction && (
             <TouchableOpacity
-              onPress={leftAction?.onPress ?? router.back}
+              onPress={leftAction?.onPress ?? routerBack}
               style={styles.iconButton}
               hitSlop={HIT_SLOP}
               activeOpacity={0.7}

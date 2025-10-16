@@ -11,11 +11,21 @@ import {
 import { ListItemProps, ListPress } from "./types";
 import { useListStyles } from "./styles";
 import { Button } from "../../base";
-import { router } from "expo-router";
 import { contentLayoutRow, iconTitleSize } from "../../../styles";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
 import { openLink } from "@gaddario98/react-native-utiles";
+
+// Lazy import di expo-router per evitare errori di moduli nativi in Bridgeless mode
+const getRouterPush = () => {
+  try {
+    const { router } = require("expo-router");
+    return router.push;
+  } catch (e) {
+    console.warn("expo-router not available, navigation will not work");
+    return () => {};
+  }
+};
 
 interface RenderersProps {
   customStyles?: {
@@ -114,6 +124,7 @@ export const useListItemRenderers = ({
 
 export const useListItemActions = (ns?: string) => {
   const { t } = useTranslation(ns);
+  
   const handlePress = useCallback(
     (onPress?: ListPress | (() => void)): void => {
       if (onPress) {
@@ -122,7 +133,8 @@ export const useListItemActions = (ns?: string) => {
         } else {
           const { link, route, action } = onPress;
           if (route) {
-            router.push(route);
+            const routerPush = getRouterPush();
+            routerPush(route);
           } else if (link) {
             openLink(link);
           } else {
