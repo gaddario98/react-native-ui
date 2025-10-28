@@ -1,4 +1,4 @@
-import { FC, useMemo, useCallback } from "react";
+import { FC, useMemo } from "react";
 import {
   View,
   TouchableOpacity,
@@ -12,17 +12,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Text } from "../base/Text";
 import { iconTitleSize, sectionTitle, useThemeColors } from "../../styles";
 
-// Lazy import di expo-router per evitare errori di moduli nativi in Bridgeless mode
-const getRouterBack = () => {
-  try {
-    const { router } = require("expo-router");
-    return router.back;
-  } catch (e) {
-    console.warn("expo-router not available, back button will not work");
-    return () => {};
-  }
-};
-
 export interface RightActionConfig {
   icon: keyof typeof Ionicons.glyphMap;
   onPress?: () => void;
@@ -34,6 +23,7 @@ export interface HeaderProps {
   rightAction?: RightActionConfig;
   leftAction?: RightActionConfig;
   style?: ViewStyle;
+  styleHeader?: ViewStyle;
   hiddenLeftAction?: boolean;
   variant?: "primary" | "secondary" | "danger";
   customGradientColors?: [string, string, ...string[]];
@@ -48,11 +38,10 @@ export const Header: FC<HeaderProps> = ({
   style,
   variant = "primary",
   customGradientColors,
+  styleHeader,
 }) => {
   const theme = useThemeColors();
   const textColor = useMemo(() => theme.onSecondary, [theme]);
-
-  const routerBack = useCallback(getRouterBack, []);
 
   const fadeAnim = useMemo(() => new Animated.Value(0), []);
   useMemo(() => {
@@ -85,12 +74,12 @@ export const Header: FC<HeaderProps> = ({
         colors={gradientColors}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-        style={styles.header}
+        style={[styles.header, styleHeader]}
       >
         <View style={styles.innerContent}>
           {!hiddenLeftAction && (
             <TouchableOpacity
-              onPress={leftAction?.onPress ?? routerBack}
+              onPress={leftAction?.onPress}
               style={styles.iconButton}
               hitSlop={HIT_SLOP}
               activeOpacity={0.7}
@@ -143,31 +132,31 @@ const HIT_SLOP = { top: 12, bottom: 12, left: 12, right: 12 };
 
 const styles = StyleSheet.create({
   container: {
+    borderRadius: 24,
+    overflow: "hidden",
     position: "relative",
     zIndex: 100,
-    borderRadius: 18,
-    overflow: "hidden",
   },
   header: {
-    flexDirection: "row",
     alignItems: "center",
+    flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 18,
     paddingVertical: 12,
   },
+  iconButton: {
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.04)",
+    borderRadius: 12,
+    justifyContent: "center",
+    padding: 6,
+  },
   innerContent: {
+    alignItems: "center",
     flex: 1,
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
     gap: 8,
-  },
-  iconButton: {
-    borderRadius: 12,
-    padding: 6,
-    backgroundColor: "rgba(0,0,0,0.04)",
-    alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   title: {
     flex: 1,
