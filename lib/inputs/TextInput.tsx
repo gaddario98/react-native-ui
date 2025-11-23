@@ -6,6 +6,7 @@ import {
   useRef,
   ComponentProps,
   memo,
+  useLayoutEffect,
 } from "react";
 import {
   View,
@@ -85,7 +86,7 @@ const TextInput: React.FC<TextInputProps> = ({
   onEndIconPress,
   disabled = false,
   loading = false,
-  debounceTime = 1000,
+  debounceTime = 600,
   ns,
   ...restProps
 }) => {
@@ -96,9 +97,20 @@ const TextInput: React.FC<TextInputProps> = ({
   const [localValue, setLocalValue] = useState(value);
   const debounceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const spinValue = useRef(new Animated.Value(0));
+  const spinInterpolation = useRef<Animated.AnimatedInterpolation<
+    string | number
+  > | null>(null);
   const theme = useThemeColors();
 
-  // Animazione di loading
+  useLayoutEffect(() => {
+    if (spinInterpolation.current == null) {
+      spinInterpolation.current = spinValue.current.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["0deg", "360deg"],
+      });
+    }
+  }, []);
+
   useEffect(() => {
     if (loading) {
       Animated.loop(
@@ -113,11 +125,6 @@ const TextInput: React.FC<TextInputProps> = ({
       spinValue.current.setValue(0);
     }
   }, [loading]);
-
-  const spin = spinValue.current?.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
-  });
 
   useEffect(() => {
     setLocalValue(value);
@@ -224,7 +231,7 @@ const TextInput: React.FC<TextInputProps> = ({
   );
 
   const textColor = useMemo(
-    () => (isFocused ? THEME_COLORS[variant] : theme.onPrimaryContainer),
+    () => (isFocused ? THEME_COLORS[variant] : theme.onBackground),
     [THEME_COLORS, isFocused, theme, variant]
   );
 
@@ -270,9 +277,11 @@ const TextInput: React.FC<TextInputProps> = ({
   }, [type]);
 
   const renderEndIcon = useCallback(() => {
-    if (loading) {
+    if (loading && spinInterpolation.current) {
       return (
-        <Animated.View style={{ transform: [{ rotate: spin }] }}>
+        <Animated.View
+          style={{ transform: [{ rotate: spinInterpolation.current }] }}
+        >
           <Ionicons name="sync" size={iconTitleSize} color={iconColor} />
         </Animated.View>
       );
@@ -303,7 +312,6 @@ const TextInput: React.FC<TextInputProps> = ({
     loading,
     type,
     endIcon,
-    spin,
     iconColor,
     togglePasswordVisibility,
     showPassword,
@@ -327,7 +335,7 @@ const TextInput: React.FC<TextInputProps> = ({
             name={startIcon}
             size={iconTitleSize}
             color={iconColor}
-            style={styles.icon}
+            style={[styles.icon, { color: iconColor }]}
           />
         )}
         <RNTextInput
@@ -349,6 +357,7 @@ const TextInput: React.FC<TextInputProps> = ({
           {...restProps}
         />
 
+        {/* eslint-disable-next-line react-hooks/refs */}
         {renderEndIcon()}
       </View>
       {errorMessage ? (

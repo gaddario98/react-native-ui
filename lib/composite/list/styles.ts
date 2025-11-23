@@ -31,9 +31,10 @@ export const useListStyles = () => {
       alignItems: "center",
       backgroundColor: colors.background,
       borderRadius: 18,
+      elevation: 5,
       flexDirection: "row",
       padding: 12,
-      shadowColor: "#000",
+      shadowColor: colors.shadow,
       shadowOffset: {
         width: 0,
         height: 2,
