@@ -114,7 +114,7 @@ const TextInput: React.FC<TextInputProps> = ({
     }
   }, [loading]);
 
-  const spin = spinValue.current.interpolate({
+  const spin = spinValue.current?.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "360deg"],
   });
@@ -216,7 +216,8 @@ const TextInput: React.FC<TextInputProps> = ({
   /**/ const handleBlur = useCallback(() => {
     setIsFocused(false);
     // validateInput(value);
-  }, [value]);
+  }, []);
+
   const togglePasswordVisibility = useCallback(
     () => setShowPassword((prev) => !prev),
     []
@@ -363,46 +364,45 @@ const TextInput: React.FC<TextInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    backgroundColor: "rgba(255,255,255,0.7)",
+    borderColor: "#E3F0FF",
     borderRadius: 14,
+    borderWidth: 1,
     flexDirection: "row",
     padding: 16,
     width: "100%",
-    backgroundColor: "rgba(255,255,255,0.7)",
-    borderWidth: 1,
-    borderColor: "#E3F0FF",
   },
   disabledContainer: {
-    opacity: 0.5,
     backgroundColor: "rgba(240,241,245,0.7)",
     borderColor: "#E0E0E0",
+    opacity: 0.5,
   },
   errorText: {
-    marginTop: 4,
     color: "#B00020",
-    fontWeight: "600",
     fontSize: 15,
+    fontWeight: "600",
+    marginTop: 4,
   },
   icon: {
     marginRight: 8,
-    color: "#4F8AFA",
   },
   input: {
-    fontWeight: "500",
-    fontSize: 18,
     color: "#222",
-    letterSpacing: 0.1,
-    padding: 0,
-    margin: 0,
-    paddingVertical: 0,
-    marginVertical: 0,
-    width: "100%",
     flex: 1,
+    fontSize: 18,
+    fontWeight: "500",
+    letterSpacing: 0.1,
+    margin: 0,
+    marginVertical: 0,
+    padding: 0,
+    paddingVertical: 0,
+    width: "100%",
   },
   label: {
-    marginBottom: 6,
-    fontWeight: "600",
     fontSize: 16,
+    fontWeight: "600",
     letterSpacing: 0.1,
+    marginBottom: 6,
   },
   wrapper: {
     width: "100%",

@@ -75,7 +75,7 @@ const ImageWithFallback = ({
       onLoad={onLoad}
       onError={handleError}
       cachePolicy="memory-disk"
-      recyclingKey={getSource}
+      recyclingKey={String(getSource)}
       contentPosition={contentPosition}
       responsivePolicy="live"
     />
