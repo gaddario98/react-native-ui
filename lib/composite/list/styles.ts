@@ -1,62 +1,67 @@
-
-import { StyleSheet } from 'react-native';
-import { useThemeColors } from '../../../styles/colors';
+import { StyleSheet } from "react-native";
+import { useThemeColors } from "../../../styles/colors";
 
 export const useListStyles = () => {
   const colors = useThemeColors();
   return StyleSheet.create({
-    listSection: {
-      borderRadius: 24,
-    },
-    listItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      backgroundColor: colors.background,
-      borderRadius: 18,
-      padding: 12,
-      elevation: 2,
-    },
-    leftIcon: {
-      marginRight: 16,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    rightIcon: {
-      marginLeft: 16,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    rightButton: {
-      minWidth: 'auto',
-      paddingHorizontal: 8,
-      borderRadius: 12
-    },
-    icon: {
-      fontSize: 24,
-      color: colors.primary,
-      opacity: 0.85,
-    },
     content: {
       flex: 1,
       flexShrink: 1,
       gap: 6,
-      justifyContent: 'center',
+      justifyContent: "center",
     },
     divider: {
-      height: 1,
       backgroundColor: colors.outline,
-      marginVertical: 2,
       borderRadius: 1,
+      height: 1,
+      marginVertical: 2,
       opacity: 0.7,
+    },
+    icon: {
+      color: colors.primary,
+      fontSize: 24,
+      opacity: 0.85,
+    },
+    leftIcon: {
+      alignItems: "center",
+      justifyContent: "center",
+      marginRight: 16,
+    },
+    listItem: {
+      alignItems: "center",
+      backgroundColor: colors.background,
+      borderRadius: 18,
+      flexDirection: "row",
+      padding: 12,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 3.84,
+    },
+    listSection: {
+      borderRadius: 24,
     },
     profilePicture: {
       borderRadius: 999,
     },
+    rightButton: {
+      borderRadius: 12,
+      minWidth: "auto",
+      paddingHorizontal: 8,
+    },
+    rightIcon: {
+      alignItems: "center",
+      justifyContent: "center",
+      marginLeft: 16,
+    },
     touchableContent: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: "center",
       borderRadius: 18,
+      flex: 1,
+      flexDirection: "row",
     },
   });
 };

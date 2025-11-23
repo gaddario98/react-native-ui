@@ -22,30 +22,28 @@ interface ItemProps extends ListItemModel {
 
 const DEFAULT_PROFILE_PICTURE_SIZE = 65;
 
-const Container = memo(
-  ({
-    children,
-    onPress,
-    handlePress,
-  }: {
-    onPress?: ListPress | (() => void);
-    children: React.JSX.Element;
-    handlePress: (onPress?: ListPress | (() => void)) => void;
-  }) => {
-    const styles = useListStyles();
-    if (onPress) {
-      return (
-        <TouchableOpacity
-          style={styles.touchableContent}
-          onPress={() => handlePress(onPress)}
-        >
-          {children}
-        </TouchableOpacity>
-      );
-    }
-    return children;
+const Container = memo(function Container({
+  children,
+  onPress,
+  handlePress,
+}: {
+  onPress?: ListPress | (() => void);
+  children: React.JSX.Element;
+  handlePress: (onPress?: ListPress | (() => void)) => void;
+}) {
+  const styles = useListStyles();
+  if (onPress) {
+    return (
+      <TouchableOpacity
+        style={styles.touchableContent}
+        onPress={() => handlePress(onPress)}
+      >
+        {children}
+      </TouchableOpacity>
+    );
   }
-);
+  return children;
+});
 const Item = ({
   iconRigth,
   rightButton,

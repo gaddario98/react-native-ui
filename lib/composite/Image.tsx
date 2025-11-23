@@ -6,13 +6,12 @@ import {
   ImageStyle,
 } from "expo-image";
 import type { StyleProp } from "react-native";
-import { buttonStyle } from "../../styles";
 
 export interface ImageWithFallbackProps {
-  source: string | string[] | null | undefined;
+  source: string | string[] | number | { uri: string } | null | undefined;
   style?: StyleProp<ImageStyle>;
   resizeMode?: ImageContentFit;
-  fallbackSource: string;
+  fallbackSource: string | number | { uri: string };
   onLoad?: () => void;
   onError?: () => void;
   transition?: number;
@@ -31,28 +30,47 @@ const ImageWithFallback = ({
 }: ImageWithFallbackProps) => {
   const [hasError, setHasError] = useState(false);
 
+  const getUri = useCallback(
+    (
+      src: string | string[] | number | { uri: string } | null | undefined
+    ): string => {
+      if (typeof src === "string") return src;
+      if (typeof src === "number") return src.toString();
+      if (Array.isArray(src)) {
+        const first = src[0];
+        if (typeof first === "string") return first;
+        if (typeof first === "number") return (first as number).toString();
+        if (first && typeof first === "object" && "uri" in first)
+          return (first as { uri: string }).uri;
+        return "";
+      }
+      if (src && typeof src === "object" && "uri" in src)
+        return (src as { uri: string }).uri;
+      return "";
+    },
+    []
+  );
+
   const getSource = useMemo(() => {
-    if (hasError) return fallbackSource;
-    if (!source) return fallbackSource;
-    if (typeof source === "string") return source;
-    if (Array.isArray(source)) return source[0];
-    return fallbackSource;
-  }, [fallbackSource, source, hasError]);
+    if (hasError) return getUri(fallbackSource);
+    if (!source) return getUri(fallbackSource);
+    return getUri(source);
+  }, [fallbackSource, source, hasError, getUri]);
 
   const handleError = useCallback(() => {
     setHasError(true);
     onError?.();
   }, [onError]);
-  
+
   if (!getSource) return null;
   return (
     <ExpoImage
       key={getSource}
       source={getSource}
-      style={[style]}
+      style={style}
       contentFit={resizeMode}
       transition={transition}
-      placeholder={fallbackSource}
+      placeholder={getUri(fallbackSource)}
       placeholderContentFit={resizeMode}
       onLoad={onLoad}
       onError={handleError}
